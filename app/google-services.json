@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1016065222538",
+    "project_id": "earnie-d972c",
+    "storage_bucket": "earnie-d972c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016065222538:android:1750932fe46fb4eddaca73",
+        "android_client_info": {
+          "package_name": "pinch.android.earnie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016065222538-2tqa0vbumomf8ndr7q76n0rqquji5dek.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj6C9tOX1vdSBbva0H0rWoW8It5GCmIBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016065222538-2tqa0vbumomf8ndr7q76n0rqquji5dek.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#F2FEFF"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AddMonthlyExpenseActivity">
+    <LinearLayout
+        android:id="@+id/top_Lay"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2">
+
+            <ImageView
+                android:id="@+id/back_press_expenses"
+                android:layout_width="16dp"
+
+                android:layout_height="16dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:src="@drawable/back" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingStart="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:paddingTop="25dp">
+
+            <TextView
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add Monthly Expenses"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:paddingTop="15dp"
+            android:paddingRight="30dp"
+            android:gravity="right">
+
+            <ImageView
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="50dp"
+                android:src="@drawable/home" />
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_above="@+id/addExpense"
+        android:id="@+id/second_lay"
+        android:layout_below="@+id/top_Lay"
+        android:background="#F2FEFF"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <EditText
+            android:id="@+id/amount"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:hint="Enter Amount"
+            android:inputType="number"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/monthly_expense_screen_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/purpose"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:hint="Enter Purpose"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/monthly_expense_screen_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <EditText
+            android:id="@+id/startDate"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:hint="Start Date"
+            android:focusable="false"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/monthly_expense_screen_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/endDate"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
+            android:paddingStart="20dp"
+            android:textColor="@color/black"
+            android:hint="End date"
+            android:focusable="false"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/monthly_expense_screen_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+        <LinearLayout
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="60dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+
+            android:background="@drawable/add_ont_time_expese_btn">
+            <ImageView
+                android:id="@+id/add_one_time_expense"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/check"
+                android:layout_width="35dp"
+                android:alpha="0.4"
+                android:layout_height="35dp"
+                />
+            <TextView
+
+                android:paddingStart="20dp"
+                android:paddingEnd="40dp"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:text="Add One time Expense"
+                android:textSize="13sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"/>
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/addExpense"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="Add Monthly Expense"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:background="@drawable/add_monthly_btn"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
