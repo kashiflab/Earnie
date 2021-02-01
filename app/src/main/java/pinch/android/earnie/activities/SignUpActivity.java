@@ -88,9 +88,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                     HashMap<String, Object> map = new HashMap<>();
                     map.put("id",auth.getCurrentUser().getUid());
+                    map.put("countryCode",countryCode.getText().toString());
                     map.put("fullname",name);
                     map.put("email",email);
-                    map.put("number",phone);
+                    map.put("number",number.getText().toString());
                     map.put("income","");
                     map.put("saved","");
 
