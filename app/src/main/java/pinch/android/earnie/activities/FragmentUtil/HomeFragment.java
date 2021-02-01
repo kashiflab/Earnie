@@ -205,7 +205,7 @@ public class HomeFragment extends Fragment {
 //                Log.e("endStamp",endStamp.toString());
 //                Log.e("currentStamp",currentStamp.toString());
 //                Log.e("startStamp",startStamp.toString());
-//                Log.e("currentMonthStartStamp",currentMonthStartStamp.toString());
+//                Log.e("currentMonthStartStamp",currentMonthStartStamp.toString()); //00
 
             Float expenseAmount = Float.parseFloat(String.valueOf(Long.parseLong(expenses.get(i).getAmount())));
 
