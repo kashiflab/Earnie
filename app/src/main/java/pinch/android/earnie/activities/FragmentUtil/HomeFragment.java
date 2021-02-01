@@ -109,7 +109,14 @@ public class HomeFragment extends Fragment {
         super.onPause();
 
         timer.cancel();
-        timerTask.cancel();
+        if(timerTask!=null) {
+            try {
+                timerTask.cancel();
+            }catch (Exception e)
+            {
+
+            }
+        }
     }
 
     @Override
@@ -590,29 +597,34 @@ public class HomeFragment extends Fragment {
     }
 
     private void getSavedAmount(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlySaved");
+        try {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                    .child(auth.getCurrentUser().getUid()).child("MonthlySaved");
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    Date c = Calendar.getInstance().getTime();
-                    System.out.println("Current time => " + c);
-                    SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-                    String formattedDate2 = df2.format(c);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                        Date c = Calendar.getInstance().getTime();
+                        System.out.println("Current time => " + c);
+                        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                        String formattedDate2 = df2.format(c);
 
-                    if(formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {
-                        savedAmount = snapshot.child("saved").getValue().toString();
+                        if (formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {
+                            savedAmount = snapshot.child("saved").getValue().toString();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
+                }
+            });
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
