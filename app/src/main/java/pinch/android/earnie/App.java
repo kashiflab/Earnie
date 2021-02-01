@@ -13,7 +13,11 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        createNotificationChannel();
+        try {
+            createNotificationChannel();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void createNotificationChannel() {

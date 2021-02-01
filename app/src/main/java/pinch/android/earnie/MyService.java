@@ -52,15 +52,19 @@ public class MyService extends Service {
         input = intent.getStringExtra("inputExtra");
         savedAmount = intent.getStringExtra("saved");
         savingId = intent.getStringExtra("savingId");
-        Intent notificationIntent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("Earnie Running")
-                .setSmallIcon(R.drawable.ic_launcher_background)
-                .setContentIntent(pendingIntent)
-                .build();
-        startForeground(1, notification);
+        try {
+            Intent notificationIntent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                    0, notificationIntent, 0);
+            Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                    .setContentTitle("Earnie Running")
+                    .setSmallIcon(R.drawable.ic_launcher_background)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            startForeground(1, notification);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         getSavedAmount();
         deductExpenseEverySecond(Double.parseDouble(input), savedAmount);
