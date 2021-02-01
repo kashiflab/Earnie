@@ -158,8 +158,9 @@ public class HomeFragment extends Fragment {
     double value = 0;
 
 
+    //    @RequiresApi(api = Build.VERSION_CODES.O)
 //    @RequiresApi(api = Build.VERSION_CODES.O)
-    @RequiresApi(api = Build.VERSION_CODES.O)
+//    @RequiresApi(api = Build.VERSION_CODES.O)
     private void calculateEverySecondDeduction(List<Expense> expenses) {
         value = 0;
         Long fineNewValue = 0L;
@@ -189,22 +190,22 @@ public class HomeFragment extends Fragment {
             int expenseStartYear = Integer.parseInt(startDate.split("/")[2]) + 2000;
             Long startStamp = getStamp(expenseStartDay, expenseStartMonth, expenseStartYear); // start time of expense
 
-            String endDate = expenses.get(i).getEndDate();
-            int expenseEndDay = Integer.parseInt(endDate.split("/")[1]);
-            int expenseEndMonth = Integer.parseInt(endDate.split("/")[0]) - 1;
-            int expenseEndYear = Integer.parseInt(endDate.split("/")[2]) + 2000;
-            Long endStamp = getStamp(expenseEndDay, expenseEndMonth, expenseEndYear); // endstamp of expense
+//            String endDate = expenses.get(i).getEndDate();
+//            int expenseEndDay = Integer.parseInt(endDate.split("/")[1]);
+//            int expenseEndMonth = Integer.parseInt(endDate.split("/")[0]) - 1;
+//            int expenseEndYear = Integer.parseInt(endDate.split("/")[2]) + 2000;
+//            Long endStamp = getStamp(expenseEndDay, expenseEndMonth, expenseEndYear); // endstamp of expense
 
 
             Long startFrom = startStamp; // consider start of the expense is in this month
-            Long endAt = endStamp; // consider end of the expense is also in this month
+//            Long endAt = endStamp; // consider end of the expense is also in this month
             Long minusSeconds = 0L;
             Long spentExpense = 0L;
 
 //                Log.e("endStamp",endStamp.toString());
 //                Log.e("currentStamp",currentStamp.toString());
 //                Log.e("startStamp",startStamp.toString());
-//                Log.e("currentMonthStartStamp",currentMonthStartStamp.toString());
+//                Log.e("currentMonthStartStamp",currentMonthStartStamp.toString()); //00
 
             Float expenseAmount = Float.parseFloat(String.valueOf(Long.parseLong(expenses.get(i).getAmount())));
 
@@ -245,7 +246,7 @@ public class HomeFragment extends Fragment {
 //                    }
 
                     // all possible seconds of this expense
-                    Long allSeconds = expenseEndMonth - startStamp;
+                    Long allSeconds = currentMonthEndStamp - startStamp;
 
 
                     // millis to seconds
@@ -287,7 +288,21 @@ public class HomeFragment extends Fragment {
                 calculateEverySecondDeduction(expenses);
             }
         };
-        timer.schedule(timerTask, 10000, 10000);
+        try {
+            timer.schedule(timerTask, 10000, 10000);
+        }
+        catch (Exception e)
+        {
+            timer = new Timer();
+
+            try {
+                timer.schedule(timerTask, 10000, 10000);
+            }
+            catch (Exception e4)
+            {
+                e4.printStackTrace();
+            }
+        }
 
     }
     public Long getStamp(int day, int month, int year)
