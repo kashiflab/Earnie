@@ -7,6 +7,11 @@ public class Users {
     private String income;
     private String email;
     private String saved;
+    private String countryCode;
+
+    public String getCountryCode() {
+        return countryCode;
+    }
 
     @Override
     public String toString() {
@@ -17,6 +22,7 @@ public class Users {
                 ", income='" + income + '\'' +
                 ", email='" + email + '\'' +
                 ", saved='" + saved + '\'' +
+                ", countryCode='" + countryCode + '\'' +
                 '}';
     }
 
