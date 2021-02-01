@@ -69,6 +69,7 @@ public class WelcomeActivity extends AppCompatActivity {
         HashMap<String,Object> map = new HashMap<>();
         map.put("income",income);
         map.put("saved",income);
+//        map.put("saved",income);
 
         reference.updateChildren(map)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {

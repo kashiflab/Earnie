@@ -14,7 +14,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         try {
-            createNotificationChannel();
+//            createNotificationChannel();
         }catch (Exception e){
             e.printStackTrace();
         }
