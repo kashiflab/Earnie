@@ -184,7 +184,10 @@ public class HomeFragment extends Fragment {
 
         for(int i=0;i<expenses.size();i++){
 
+            Log.e("Hitting","Hitting"+i);
+
             String startDate = expenses.get(i).getStartDate();
+            Log.e("startDate",startDate.toString());
             int expenseStartDay = Integer.parseInt(startDate.split("/")[1]);
             int expenseStartMonth = Integer.parseInt(startDate.split("/")[0]) -1;
             int expenseStartYear = Integer.parseInt(startDate.split("/")[2]) + 2000;
@@ -197,7 +200,7 @@ public class HomeFragment extends Fragment {
 //            Long endStamp = getStamp(expenseEndDay, expenseEndMonth, expenseEndYear); // endstamp of expense
 
 
-            Long startFrom = startStamp; // consider start of the expense is in this month
+//            Long startFrom = startStamp; // consider start of the expense is in this month
 //            Long endAt = endStamp; // consider end of the expense is also in this month
             Long minusSeconds = 0L;
             Long spentExpense = 0L;
@@ -211,8 +214,10 @@ public class HomeFragment extends Fragment {
 
 
             // if one time or now
-            if(!expenses.get(i).isOneTimeExp())
+            if(expenses.get(i).isOneTimeExp())
             {
+
+                Log.e("thisis","Monthly");
                 // monthly, we don't need any time condition here except that it started before this time
                 if (startStamp < currentStamp) {
                     // all seconds of 30 days
@@ -226,11 +231,23 @@ public class HomeFragment extends Fragment {
 
                     // multiple above two things, we got our guy
                     spentExpense = Long.parseLong(String.valueOf(Math.round(Float.parseFloat(String.valueOf(minusSeconds)) * spentExpensePerSecond)));
+                    Log.e("KillConfirmed","Charlie, Charlie, Kill Confirmed, Over Monthly");
+                    Log.e("expenseAmount",(expenses.get(i).getAmount()));
+                    Log.e("spentExpensePerSecond",spentExpensePerSecond.toString());
+                    Log.e("allSeconds",allSeconds.toString());
+
+                    Log.e("minusSeconds",minusSeconds.toString());
+                    Log.e("spentExpense",spentExpense.toString());
                 }
             }
             else {
+//                expenseStartDay = Integer.parseInt(startDate.split("/")[1]);
+//                expenseStartMonth = Integer.parseInt(startDate.split("/")[0]) -1;
+//                expenseStartYear = Integer.parseInt(startDate.split("/")[2]) + 2000;
+//                startStamp = getStamp(expenseStartDay, expenseStartMonth, expenseStartYear-2000);
+                Log.e("thisis","One Time");
                 // one time
-                if (startStamp < currentStamp && startStamp>currentMonthStartStamp) {
+                if (startStamp < currentStamp && startStamp>=currentMonthStartStamp) {
 
 //                    // check if start of the expense is this month or previous or maybe earlier
 //                    if (startStamp < currentMonthStartStamp) {
@@ -271,11 +288,18 @@ public class HomeFragment extends Fragment {
                     Log.e("minusSeconds",minusSeconds.toString());
                     Log.e("spentExpense",spentExpense.toString());
                 }
+                else{
+                    Log.e("failed",startStamp.toString());
+                    Log.e("failedMonth",currentMonthStartStamp.toString());
+                    Log.e("failedCurrent",currentStamp.toString());
+                }
             }
 
             fineNewValue += spentExpense;
 //                value = value + cal;
         }
+
+        Log.e("sendingReqToDeduct",fineNewValue.toString());
         startRunningMyChild(String.valueOf(fineNewValue),incomeAmount,savingId);
     }
     public void startPhuckingSeconds(List<Expense> expenses)

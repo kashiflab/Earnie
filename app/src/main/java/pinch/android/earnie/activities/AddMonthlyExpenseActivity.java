@@ -116,7 +116,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Date c = Calendar.getInstance().getTime();
 
-                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                SimpleDateFormat df = new SimpleDateFormat("MM/dd/yy", Locale.getDefault());
                 String formattedDate = df.format(c);
 
                 startDate.setText(formattedDate);

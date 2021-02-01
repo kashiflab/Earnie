@@ -56,6 +56,7 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
             holder.renewDate.setText(expense.getDate() + " of Each Month");
         }else{
             holder.renewDate.setText("Non-renewable");
+            holder.edit.setVisibility(View.GONE);
         }
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
