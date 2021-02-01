@@ -27,7 +27,7 @@ import pinch.android.earnie.R;
 
 public class AddExpensesActivity extends AppCompatActivity {
 
-    TextView add_monthly_expense_tv, add_one_time_expense;
+    TextView add_monthly_expense_tv;
     ImageView back_press_expenses;
 
     FirebaseAuth auth;
@@ -44,7 +44,6 @@ public class AddExpensesActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        add_one_time_expense = findViewById(R.id.add_one_time_expense);
         add_monthly_expense_tv=(TextView)findViewById(R.id.add_monthly_expense_tv);
         back_press_expenses=(ImageView)findViewById(R.id.back_press_expenses);
 
@@ -66,16 +65,6 @@ public class AddExpensesActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(view==add_monthly_expense_tv)
-                {
-                    startActivity(new Intent(AddExpensesActivity.this,AddMonthlyExpenseActivity.class));
-                }
-            }
-        });
-
-        add_one_time_expense.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(view==add_one_time_expense)
                 {
                     startActivity(new Intent(AddExpensesActivity.this,AddMonthlyExpenseActivity.class));
                 }

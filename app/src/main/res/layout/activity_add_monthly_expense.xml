@@ -98,6 +98,7 @@
             android:id="@+id/startDate"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
+            android:visibility="gone"
             android:paddingStart="20dp"
             android:textColor="@color/black"
             android:hint="Start Date"
@@ -109,6 +110,7 @@
             android:layout_height="wrap_content"/>
 
         <EditText
+            android:visibility="gone"
             android:id="@+id/endDate"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
@@ -148,7 +150,7 @@
                 android:paddingEnd="40dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
-                android:text="Add One time Expense"
+                android:text="Recurring Payment"
                 android:textSize="13sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

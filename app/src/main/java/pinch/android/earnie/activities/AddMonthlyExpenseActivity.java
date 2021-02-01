@@ -98,9 +98,13 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(oneTimeExpense.getAlpha()==0.4f){
+                    startDate.setVisibility(View.VISIBLE);
+                    endDate.setVisibility(View.VISIBLE);
                     oneTimeExpense.setAlpha(1.0f);
                     OTE = true;
                 }else {
+                    startDate.setVisibility(View.GONE);
+                    endDate.setVisibility(View.GONE);
                     oneTimeExpense.setAlpha(0.4f);
                     OTE = false;
                 }
@@ -110,8 +114,14 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         addExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (TextUtils.isEmpty(amount.getText().toString()) || TextUtils.isEmpty(purpose.getText().toString())
-                        || TextUtils.isEmpty(startDate.getText().toString()) || TextUtils.isEmpty(endDate.getText().toString())) {
+                Date c = Calendar.getInstance().getTime();
+
+                SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                String formattedDate = df.format(c);
+
+                startDate.setText(formattedDate);
+
+                if (TextUtils.isEmpty(amount.getText().toString()) || TextUtils.isEmpty(purpose.getText().toString())) {
                     Toast.makeText(AddMonthlyExpenseActivity.this, "All fields are required", Toast.LENGTH_SHORT).show();
                 } else {
                     if(!isEdit) {

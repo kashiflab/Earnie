@@ -159,6 +159,7 @@ public class HomeFragment extends Fragment {
 
 
 //    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void calculateEverySecondDeduction(List<Expense> expenses) {
         value = 0;
         Long fineNewValue = 0L;
@@ -280,6 +281,7 @@ public class HomeFragment extends Fragment {
     {
 
         timerTask = new TimerTask() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void run() {
                 calculateEverySecondDeduction(expenses);
@@ -432,10 +434,18 @@ public class HomeFragment extends Fragment {
                 barEntries = new ArrayList<>();
                 savings = new ArrayList<>();
                 labelName = new ArrayList<>();
+                Date c = Calendar.getInstance().getTime();
+
+                SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                String formattedDate2 = df2.format(c);
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     savings.add(new MonthlySavings(dataSnapshot.child("saved").getValue().toString(),
                             dataSnapshot.child("month").getValue().toString()));
-                    savingId = dataSnapshot.getKey().toString();
+
+                    if(dataSnapshot.child("month").getValue().toString()
+                            .equals(formattedDate2.split("-")[1])) {
+                        savingId = dataSnapshot.getKey().toString();
+                    }
                 }
                 for (int i=0;i<savings.size();i++) {
 

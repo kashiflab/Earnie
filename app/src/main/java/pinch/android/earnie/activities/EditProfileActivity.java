@@ -19,12 +19,17 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 
 import pinch.android.earnie.R;
+import pinch.android.earnie.Users;
 import pinch.android.earnie.Utils.Utils;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -51,6 +56,8 @@ public class EditProfileActivity extends AppCompatActivity {
         saveChanges = findViewById(R.id.saveChanges);
 
         back_press=(ImageView)findViewById(R.id.back_press);
+
+        getUserData(auth.getCurrentUser().getUid());
 
         back_press.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +88,29 @@ public class EditProfileActivity extends AppCompatActivity {
                     updateUserData(country_code.getText().toString()+number.getText().toString(),
                             name.getText().toString());
                 }
+            }
+        });
+    }
+
+    private Users users;
+
+    private void getUserData(String id) {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(id);
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                users = snapshot.getValue(Users.class);
+
+                number.setText(users.getNumber());
+                name.setText(users.getFullname());
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
