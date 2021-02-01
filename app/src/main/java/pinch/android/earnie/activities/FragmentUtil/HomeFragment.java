@@ -228,23 +228,23 @@ public class HomeFragment extends Fragment {
             }
             else {
                 // one time
-                if (endStamp > currentStamp && startStamp < currentStamp) {
+                if (startStamp < currentStamp && startStamp>currentMonthStartStamp) {
 
-                    // check if start of the expense is this month or previous or maybe earlier
-                    if (startStamp < currentMonthStartStamp) {
-                        startFrom = currentMonthStartStamp;
-                        Log.e("Good","I'm using monthly start stamp");
-                    }
+//                    // check if start of the expense is this month or previous or maybe earlier
+//                    if (startStamp < currentMonthStartStamp) {
+//                        startFrom = currentMonthStartStamp;
+//                        Log.e("Good","I'm using monthly start stamp");
+//                    }
 
 
-                    // check if end of the expense after next month or later
-                    if (endStamp > currentMonthEndStamp) {
-                        endAt = currentMonthEndStamp;
-                        Log.e("sad","I'm using monthly stamp");
-                    }
+//                    // check if end of the expense after next month or later
+//                    if (endStamp > currentMonthEndStamp) {
+//                        endAt = currentMonthEndStamp;
+//                        Log.e("sad","I'm using monthly stamp");
+//                    }
 
                     // all possible seconds of this expense
-                    Long allSeconds = endStamp - startStamp;
+                    Long allSeconds = expenseEndMonth - startStamp;
 
 
                     // millis to seconds
@@ -256,7 +256,7 @@ public class HomeFragment extends Fragment {
                     // TODO: implement next month logic-- DONE, YAY!!
 
                     // 1. seconds that are in past but are of this month
-                    minusSeconds = (currentStamp / 1000) - (startFrom / 1000);
+                    minusSeconds = (currentStamp / 1000) - (startStamp / 1000);
 
 
                     // multiply above seconds with per second spent value, we got our guy
