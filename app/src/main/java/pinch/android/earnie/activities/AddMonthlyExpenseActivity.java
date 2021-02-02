@@ -59,6 +59,8 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        getMonthlySavingsId();
+
         amount = findViewById(R.id.amount);
         purpose = findViewById(R.id.purpose);
         startDate = findViewById(R.id.startDate);
@@ -206,7 +208,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         String year = formattedDate.split("-")[2];
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense")
+                .child(auth.getCurrentUser().getUid()).child("MothlySavings").child(monthlySavingsId).child("MonthlyExpense")
                 .child(id);
 
         HashMap<String,Object> map = new HashMap<>();
@@ -254,10 +256,10 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
 
     private void addMonthlyExpense(String amount2, String purpose2, String startDate2, String endDate2) {
 
+
         Utils.initpDialog(AddMonthlyExpenseActivity.this,"Adding Expense...");
         Utils.showpDialog();
         Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
@@ -266,7 +268,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         String year = formattedDate.split("-")[2];
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
 
         String id = UUID.randomUUID().toString();
 
@@ -296,6 +298,36 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
                 }else {
                     Log.e("ERROR","ERROR");
                 }
+            }
+        });
+    }
+
+    String monthlySavingsId = "";
+
+    private void getMonthlySavingsId() {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        String month = formattedDate.split("-")[1];
+        String year = formattedDate.split("-")[2];
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("MonthlySavings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    if(dataSnapshot.child("month").getValue().toString().equals(month) &&
+                            dataSnapshot.child("year").getValue().toString().equals(year)){
+                        monthlySavingsId = dataSnapshot.getKey().toString();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

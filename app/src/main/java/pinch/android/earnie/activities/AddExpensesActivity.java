@@ -18,8 +18,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pinch.android.earnie.AdapterUtil.MonthlyExpenseAdapter;
 import pinch.android.earnie.Expense;
@@ -71,14 +75,44 @@ public class AddExpensesActivity extends AppCompatActivity {
             }
         });
 
-        getMonthlyExpenses();
+        getMonthlySavingsId();
 
     }
+    String monthlySavingsId = "";
 
+    private void getMonthlySavingsId() {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        String month = formattedDate.split("-")[1];
+        String year = formattedDate.split("-")[2];
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("MonthlySavings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    if(dataSnapshot.child("month").getValue().toString().equals(month) &&
+                            dataSnapshot.child("year").getValue().toString().equals(year)){
+                        monthlySavingsId = dataSnapshot.getKey().toString();
+
+                        getMonthlyExpenses();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void getMonthlyExpenses() {
         monthlyExpense = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

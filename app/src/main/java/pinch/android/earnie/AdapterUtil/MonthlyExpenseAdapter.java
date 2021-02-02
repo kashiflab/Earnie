@@ -14,10 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import pinch.android.earnie.Expense;
 import pinch.android.earnie.R;
@@ -61,7 +68,7 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                removeMonthlyExpense(expense.getId());
+                getMonthlySavingsId(expense.getId());
             }
         });
 
@@ -78,7 +85,7 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
 
     private void removeMonthlyExpense(String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense").child(id);
+                .child(auth.getCurrentUser().getUid()).child("MothlySavings").child(monthlySavingsId).child("MonthlyExpense").child(id);
 
         reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -89,6 +96,39 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
             }
         });
 
+    }
+
+    String monthlySavingsId = "";
+
+    private void getMonthlySavingsId(String id) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        String month = formattedDate.split("-")[1];
+        String year = formattedDate.split("-")[2];
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("MonthlySavings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    if(dataSnapshot.child("month").getValue().toString().equals(month) &&
+                            dataSnapshot.child("year").getValue().toString().equals(year)){
+                        monthlySavingsId = dataSnapshot.getKey().toString();
+
+                        removeMonthlyExpense(id);
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

@@ -32,6 +32,8 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -233,6 +235,8 @@ public class HomeFragment extends Fragment {
                     // divide expense amount on 30 days' seconds to get per second spent
                     Float spentExpensePerSecond = expenseAmount / Float.parseFloat(String.valueOf(allSeconds));
 
+
+
                     // seconds that are in past, but are in the same month
                     minusSeconds = (currentStamp / 1000) - (currentMonthStartStamp / 1000);
 
@@ -357,11 +361,40 @@ public class HomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+    String monthlySavingsId = "";
 
+    private void getMonthlySavingsId(String id) {
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate = df.format(c);
+        String month = formattedDate.split("-")[1];
+        String year = formattedDate.split("-")[2];
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("MonthlySavings");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    if(dataSnapshot.child("month").getValue().toString().equals(month) &&
+                            dataSnapshot.child("year").getValue().toString().equals(year)){
+                        monthlySavingsId = dataSnapshot.getKey().toString();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     private void getMonthlyExpenses() {
         monthlyExpense = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
 
         reference.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -452,10 +485,11 @@ public class HomeFragment extends Fragment {
                         saved_amountTv.setText(new DecimalFormat(".#").format(Double.
                                 parseDouble(dataSnapshot.child("saved").getValue().toString())));
                         savedAmount = dataSnapshot.child("saved").getValue().toString();
+                        monthlySavingsId = dataSnapshot.getKey().toString();
+                        getMonthlyExpenses();
                     }
                 }
 
-                getMonthlyExpenses();
             }
 
             @Override
@@ -471,6 +505,7 @@ public class HomeFragment extends Fragment {
     boolean isShown = false;
 
     public void getMonthlySavings(){
+        getOneTimeExpense();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(auth.getCurrentUser().getUid()).child("MonthlySavings");
 
@@ -486,11 +521,14 @@ public class HomeFragment extends Fragment {
                 String formattedDate2 = df2.format(c);
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     savings.add(new MonthlySavings(dataSnapshot.child("saved").getValue().toString(),
-                            dataSnapshot.child("month").getValue().toString()));
+                            dataSnapshot.child("month").getValue().toString(),dataSnapshot.child("year").getValue().toString(),
+                            Boolean.parseBoolean(dataSnapshot.child("isSalarySet").getValue().toString())));
 
                     if(dataSnapshot.child("month").getValue().toString()
                             .equals(formattedDate2.split("-")[1])) {
                         savingId = dataSnapshot.getKey().toString();
+                    }else{
+                        startNewMonth();
                     }
                 }
                 for (int i=0;i<savings.size();i++) {
@@ -526,6 +564,32 @@ public class HomeFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+    }
+
+    private void startNewMonth() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("MonthlySavings");
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate2 = df2.format(c);
+
+        String id = UUID.randomUUID().toString();
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("saved",incomeAmount);
+        map.put("month",formattedDate2.split("-")[1]);
+        map.put("isSalraySet",true);
+        map.put("year",formattedDate2.split("-")[2]);
+
+        reference.child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+
+                }
             }
         });
     }
@@ -593,6 +657,38 @@ public class HomeFragment extends Fragment {
             editor.apply();
             reference.child(id).setValue(map);
         }
+
+    }
+
+    List<Expense> oneTimeExpense;
+
+    public void getOneTimeExpense(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+                .child("oneTimeExpense");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                oneTimeExpense = new ArrayList<>();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    oneTimeExpense.add(new Expense(dataSnapshot.child("id").getValue().toString(),
+                            dataSnapshot.child("amount").getValue().toString(),
+                            dataSnapshot.child("purpose").getValue().toString(),
+                            dataSnapshot.child("startDate").getValue().toString(),
+                            dataSnapshot.child("endDate").getValue().toString(),
+                            dataSnapshot.child("date").getValue().toString(),
+                            dataSnapshot.child("month").getValue().toString(),
+                            dataSnapshot.child("year").getValue().toString(),
+                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
+                    ));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
     }
 

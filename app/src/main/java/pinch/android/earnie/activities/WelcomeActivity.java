@@ -69,6 +69,7 @@ public class WelcomeActivity extends AppCompatActivity {
         HashMap<String,Object> map = new HashMap<>();
         map.put("income",income);
         map.put("saved",income);
+
 //        map.put("saved",income);
 
         reference.updateChildren(map)
@@ -102,6 +103,8 @@ public class WelcomeActivity extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("saved",income) ;
         map.put("month",formattedDate2.split("-")[1]);
+        map.put("isSalraySet",true);
+        map.put("year",formattedDate2.split("-")[2]);
 
         reference.child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
