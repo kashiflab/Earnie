@@ -129,8 +129,10 @@ public class AddExpensesActivity extends AppCompatActivity {
                             dataSnapshot.child("date").getValue().toString(),
                             dataSnapshot.child("month").getValue().toString(),
                             dataSnapshot.child("year").getValue().toString(),
-                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
-                            ));
+                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString()),
+                            Boolean.parseBoolean(dataSnapshot.child("deducted").getValue().toString())
+
+                    ));
                 }
                 adapter = new MonthlyExpenseAdapter(AddExpensesActivity.this,monthlyExpense);
                 expenseRecyclerView.setAdapter(adapter);
