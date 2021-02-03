@@ -483,7 +483,7 @@ public class HomeFragment extends Fragment {
                     String formattedDate2 = df2.format(c);
 
                     if(formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {
-                        saved_amountTv.setText(new DecimalFormat(".#").format(Double.
+                        saved_amountTv.setText(new DecimalFormat(".####").format(Double.
                                 parseDouble(dataSnapshot.child("saved").getValue().toString())));
                         savedAmount = dataSnapshot.child("saved").getValue().toString();
                         monthlySavingsId = dataSnapshot.getKey().toString();
@@ -554,7 +554,7 @@ public class HomeFragment extends Fragment {
                             public void run() {
                                 setGraphData();
                             }
-                        }, 30000);
+                        }, 300000);
                     } else {
                         setGraphData();
                         isShown = true;
