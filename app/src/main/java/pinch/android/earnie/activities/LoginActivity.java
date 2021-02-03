@@ -77,36 +77,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 SharedPreferences preferences = getSharedPreferences("pinch.android.earnie",MODE_PRIVATE);
                 boolean isIncomeAdded = preferences.getBoolean("isIncomeAdded",false);
 
-                Utils.hidepDialog();
 
                 if(task.isSuccessful()){
-                    if(isSaralySet){
-                        startActivity(new Intent(LoginActivity.this, MainDrawerActivity.class));
-                        finish();
-                        finishAffinity();
-                    }else {
-                        startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-                        finish();
-                        finishAffinity();
-                    }
+                    isSalarySet(auth.getCurrentUser().getUid());
+
                 }
                 else Toast.makeText(LoginActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private boolean isSaralySet = false;
-
-    private void isSarlaySet(String id){
+    private void isSalarySet(String id){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(id);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Utils.hidepDialog();
                 if(!snapshot.child("saved").getValue().equals("")){
-                    isSaralySet = true;
+                    startActivity(new Intent(LoginActivity.this, MainDrawerActivity.class));
+                    finish();
+                    finishAffinity();
+
                 }else {
-                    isSaralySet = false;
+                    startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+                    finish();
+                    finishAffinity();
                 }
             }
 

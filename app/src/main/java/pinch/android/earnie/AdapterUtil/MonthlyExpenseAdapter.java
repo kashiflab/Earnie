@@ -30,6 +30,7 @@ import pinch.android.earnie.Expense;
 import pinch.android.earnie.R;
 import pinch.android.earnie.Utils.Utils;
 import pinch.android.earnie.activities.AddMonthlyExpenseActivity;
+import pinch.android.earnie.activities.AddRecurringExpenseActivity;
 
 public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAdapter.ViewHolder> {
 
@@ -75,17 +76,24 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, AddMonthlyExpenseActivity.class)
-                .putExtra("isEdit",true).putExtra("amount",expense.getAmount())
-                .putExtra("purpose",expense.getPurpose()).putExtra("startDate",expense.getStartDate())
-                .putExtra("endDate",expense.getEndDate()).putExtra("id",expense.getId()));
+                if(expense.isOneTimeExp()){
+                    context.startActivity(new Intent(context, AddRecurringExpenseActivity.class)
+                            .putExtra("isEdit", true).putExtra("amount", expense.getAmount())
+                            .putExtra("purpose", expense.getPurpose()).putExtra("startDate", expense.getStartDate())
+                            .putExtra("endDate", expense.getEndDate()).putExtra("id", expense.getId()));
+                }else {
+                    context.startActivity(new Intent(context, AddMonthlyExpenseActivity.class)
+                            .putExtra("isEdit", true).putExtra("amount", expense.getAmount())
+                            .putExtra("purpose", expense.getPurpose()).putExtra("startDate", expense.getStartDate())
+                            .putExtra("endDate", expense.getEndDate()).putExtra("id", expense.getId()));
+                }
             }
         });
     }
 
     private void removeMonthlyExpense(String id) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MothlySavings").child(monthlySavingsId).child("MonthlyExpense").child(id);
+                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense").child(id);
 
         reference.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

@@ -6,7 +6,7 @@
     android:background="#F2FEFF"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.AddMonthlyExpenseActivity">
+    tools:context=".activities.AddRecurringExpenseActivity">
     <LinearLayout
         android:id="@+id/top_Lay"
         android:layout_width="match_parent"
@@ -98,7 +98,6 @@
             android:id="@+id/startDate"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
-            android:visibility="gone"
             android:paddingStart="20dp"
             android:textColor="@color/black"
             android:hint="Start Date"
@@ -110,7 +109,6 @@
             android:layout_height="wrap_content"/>
 
         <EditText
-            android:visibility="gone"
             android:id="@+id/endDate"
             android:layout_marginTop="10dp"
             android:textSize="14sp"
@@ -125,41 +123,40 @@
             android:layout_height="wrap_content"/>
 
 
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="60dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
+<!--        <LinearLayout-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginStart="60dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_marginEnd="60dp"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="50dp"-->
 
-            android:background="@drawable/add_ont_time_expese_btn">
-            <ImageView
-                android:id="@+id/add_one_time_expense"
-                android:layout_marginStart="8dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/check"
-                android:layout_width="35dp"
-                android:alpha="0.4"
-                android:layout_height="35dp"
-                />
-            <TextView
+<!--            android:background="@drawable/add_ont_time_expese_btn">-->
+<!--            <ImageView-->
+<!--                android:id="@+id/add_one_time_expense"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:src="@drawable/check"-->
+<!--                android:layout_width="35dp"-->
+<!--                android:alpha="0.4"-->
+<!--                android:layout_height="35dp"-->
+<!--                />-->
+<!--            <TextView-->
 
-                android:paddingStart="20dp"
-                android:paddingEnd="40dp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:text="Recurring Payment"
-                android:textSize="13sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_gravity="center"/>
+<!--                android:paddingStart="20dp"-->
+<!--                android:paddingEnd="40dp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:text="Recurring Payment"-->
+<!--                android:textSize="13sp"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:layout_gravity="center"/>-->
 
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
 
 
@@ -172,7 +169,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/white"
-        android:text="Add Monthly Expense"
+        android:text="Add Recurring Expense"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/add_monthly_btn"

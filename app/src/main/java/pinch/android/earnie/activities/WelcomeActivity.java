@@ -16,8 +16,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
@@ -35,6 +38,8 @@ public class WelcomeActivity extends AppCompatActivity {
     private TextView add_income_tv;
     private TextView incomeEt;
 
+    private TextView username;
+
     FirebaseAuth auth;
 
     @Override
@@ -44,8 +49,11 @@ public class WelcomeActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        username = findViewById(R.id.username);
         incomeEt = findViewById(R.id.incomeEt);
         add_income_tv=(TextView)findViewById(R.id.add_income_tv);
+
+        getUsername();
 
         add_income_tv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +66,24 @@ public class WelcomeActivity extends AppCompatActivity {
                     setIncome(incomeEt.getText().toString());
 
                 }
+            }
+        });
+    }
+
+    public void getUsername(){
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(auth.getCurrentUser().getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                username.setText(snapshot.child("fullname").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -103,7 +129,7 @@ public class WelcomeActivity extends AppCompatActivity {
         HashMap<String, Object> map = new HashMap<>();
         map.put("saved",income) ;
         map.put("month",formattedDate2.split("-")[1]);
-        map.put("isSalraySet",true);
+        map.put("isSalarySet",true);
         map.put("year",formattedDate2.split("-")[2]);
 
         reference.child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {

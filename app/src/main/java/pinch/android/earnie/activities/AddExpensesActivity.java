@@ -31,7 +31,7 @@ import pinch.android.earnie.R;
 
 public class AddExpensesActivity extends AppCompatActivity {
 
-    TextView add_monthly_expense_tv;
+    TextView add_monthly_expense_tv, add_one_time_expense;
     ImageView back_press_expenses;
 
     FirebaseAuth auth;
@@ -48,6 +48,7 @@ public class AddExpensesActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        add_one_time_expense = findViewById(R.id.add_one_time_expense);
         add_monthly_expense_tv=(TextView)findViewById(R.id.add_monthly_expense_tv);
         back_press_expenses=(ImageView)findViewById(R.id.back_press_expenses);
 
@@ -62,6 +63,13 @@ public class AddExpensesActivity extends AppCompatActivity {
                 {
                     finish();
                 }
+            }
+        });
+
+        add_one_time_expense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(AddExpensesActivity.this,AddRecurringExpenseActivity.class));
             }
         });
 
@@ -112,7 +120,7 @@ public class AddExpensesActivity extends AppCompatActivity {
     private void getMonthlyExpenses() {
         monthlyExpense = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override

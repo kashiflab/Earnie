@@ -110,6 +110,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         }
                     });
 
+                }else {
+                    Utils.hidepDialog();
                 }
             }
         });
