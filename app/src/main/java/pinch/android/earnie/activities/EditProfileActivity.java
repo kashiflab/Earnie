@@ -35,7 +35,7 @@ import pinch.android.earnie.Utils.Utils;
 public class EditProfileActivity extends AppCompatActivity {
 
     private ImageView back_press;
-    private EditText number, country_code, name, password, confirmPassword, oldPassword;
+    private EditText number, country_code, name, password, confirmPassword, oldPassword, salary;
     private Button saveChanges;
 
     private FirebaseAuth auth;
@@ -47,6 +47,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
+        salary = findViewById(R.id.salary);
         oldPassword = findViewById(R.id.oldPassword);
         number = findViewById(R.id.number);
         country_code = findViewById(R.id.country_code);
@@ -72,12 +73,13 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(TextUtils.isEmpty(number.getText()) || TextUtils.isEmpty(country_code.getText())
-                || TextUtils.isEmpty(name.getText().toString())){
+                || TextUtils.isEmpty(name.getText().toString()) || TextUtils.isEmpty(salary.getText())){
                     Toast.makeText(EditProfileActivity.this, "Number and name is required", Toast.LENGTH_SHORT).show();
                 }else if(password.getText().toString().length()>0){
                     if(password.getText().toString().equals(confirmPassword.getText().toString())){
                         updatePassword(country_code.getText().toString(),number.getText().toString(),
-                                name.getText().toString(), password.getText().toString(), oldPassword.getText().toString());
+                                name.getText().toString(), password.getText().toString(), oldPassword.getText().toString(),
+                                salary.getText().toString());
                     }else{
                         Toast.makeText(EditProfileActivity.this, "Password doesn't match", Toast.LENGTH_SHORT).show();
                     }
@@ -85,7 +87,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     Utils.initpDialog(EditProfileActivity.this,"Updating...");
                     Utils.showpDialog();
                     updateUserData(country_code.getText().toString(),number.getText().toString(),
-                            name.getText().toString());
+                            name.getText().toString(),salary.getText().toString());
                 }
             }
         });
@@ -105,6 +107,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 number.setText(users.getNumber());
                 name.setText(users.getFullname());
                 country_code.setText(users.getCountryCode());
+                salary.setText(users.getIncome());
 
             }
 
@@ -115,7 +118,8 @@ public class EditProfileActivity extends AppCompatActivity {
         });
     }
 
-    private void updatePassword(String countryCode, String number, String name, String password, String oldPassword) {
+    private void updatePassword(String countryCode, String number, String name, String password,
+                                String oldPassword, String salary) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -133,7 +137,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-                                        updateUserData(countryCode,number,name);
+                                        updateUserData(countryCode,number,name, salary);
                                         Log.d("TAG", "Password updated");
                                     } else {
                                         Log.d("TAG", "Error password not updated");
@@ -147,7 +151,7 @@ public class EditProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateUserData(String countryCode,String number, String name) {
+    private void updateUserData(String countryCode,String number, String name, String salary) {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(auth.getCurrentUser().getUid());
 
@@ -155,6 +159,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("fullname",name);
         map.put("number",number);
         map.put("countryCode",countryCode);
+        map.put("salary",salary);
 
         reference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

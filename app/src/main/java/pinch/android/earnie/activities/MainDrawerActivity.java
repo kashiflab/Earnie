@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class MainDrawerActivity extends AppCompatActivity {
     FirebaseAuth auth;
 
     TextView fullname, email;
+    ImageView close;
     Users users;
 
     @Override
@@ -55,6 +57,7 @@ public class MainDrawerActivity extends AppCompatActivity {
 
         fullname = findViewById(R.id.fullname);
         email = findViewById(R.id.emailTv);
+        close = findViewById(R.id.close);
 
         clk0 = findViewById(R.id.click0);
         clk1 = findViewById(R.id.click1);
@@ -68,6 +71,14 @@ public class MainDrawerActivity extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         Initializing();
+
+
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
     }
 
     public void getUserData(String id){
