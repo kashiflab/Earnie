@@ -412,7 +412,8 @@ public class HomeFragment extends Fragment {
                             dataSnapshot.child("date").getValue().toString(),
                             dataSnapshot.child("month").getValue().toString(),
                             dataSnapshot.child("year").getValue().toString(),
-                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
+                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString()),
+                            Boolean.parseBoolean(dataSnapshot.child("deducted").getValue().toString())
                     ));
                 }
                 adapter = new RecentExpenseAdapter(getActivity(),monthlyExpense);
@@ -679,7 +680,8 @@ public class HomeFragment extends Fragment {
                             dataSnapshot.child("date").getValue().toString(),
                             dataSnapshot.child("month").getValue().toString(),
                             dataSnapshot.child("year").getValue().toString(),
-                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
+                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString()),
+                            Boolean.parseBoolean(dataSnapshot.child("deducted").getValue().toString())
                     ));
                 }
             }
