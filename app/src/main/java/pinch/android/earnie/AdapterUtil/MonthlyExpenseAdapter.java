@@ -99,7 +99,7 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(context, "Removed", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "Removed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
