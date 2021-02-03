@@ -5,7 +5,7 @@ public class Expense {
     private String amount;
 
     public Expense(String id, String amount, String purpose, String startDate, String endDate, String date,
-                   String month, String year, boolean isOneTimeExp) {
+                   String month, String year, boolean isOneTimeExp, boolean deducted) {
         this.id = id;
         this.amount = amount;
         this.purpose = purpose;
@@ -15,12 +15,14 @@ public class Expense {
         this.month = month;
         this.year = year;
         this.isOneTimeExp = isOneTimeExp;
+        this.deducted = deducted;
     }
 
     private String purpose;
     private String startDate;
     private String endDate;
     private String date;
+    private boolean deducted;
 
     @Override
     public String toString() {
@@ -34,12 +36,17 @@ public class Expense {
                 ", month='" + month + '\'' +
                 ", year='" + year + '\'' +
                 ", isOneTimeExp=" + isOneTimeExp +
+                ", deducted=" + deducted +
                 '}';
     }
 
     private String month;
     private String year;
     private boolean isOneTimeExp;
+
+    public boolean isDeducted() {
+        return deducted;
+    }
 
     public String getAmount() {
         return amount;

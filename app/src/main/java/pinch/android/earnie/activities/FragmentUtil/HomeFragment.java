@@ -106,14 +106,10 @@ public class HomeFragment extends Fragment {
     private String savedAmount;
     private  String incomeAmount = "0";
 
-    private boolean isMounted = false;
-
-
     @Override
     public void onPause() {
         super.onPause();
 
-        isMounted = true;
         timer.cancel();
         if(timerTask!=null) {
             try {
@@ -128,7 +124,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        isMounted = false;
         timer = new Timer();
         getIncome();
         getMonthlySavings();
@@ -140,7 +135,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        isMounted = true;
         auth = FirebaseAuth.getInstance();
 
         add_expense_tv=(TextView)view.findViewById(R.id.add_expense_tv);
@@ -399,15 +393,8 @@ public class HomeFragment extends Fragment {
     }
     private void getMonthlyExpenses() {
         monthlyExpense = new ArrayList<>();
-        Date c = Calendar.getInstance().getTime();
-
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
-        String month = formattedDate.split("-")[1];
-        String year = formattedDate.split("-")[2];
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
 
         reference.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -417,19 +404,16 @@ public class HomeFragment extends Fragment {
                     monthlyExpense.clear();
                 }
                 for (DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    if(dataSnapshot.child("month").getValue().toString().equals(month)
-                    && dataSnapshot.child("year").getValue().toString().equals(year)) {
-                        monthlyExpense.add(new Expense(dataSnapshot.child("id").getValue().toString(),
-                                dataSnapshot.child("amount").getValue().toString(),
-                                dataSnapshot.child("purpose").getValue().toString(),
-                                dataSnapshot.child("startDate").getValue().toString(),
-                                dataSnapshot.child("endDate").getValue().toString(),
-                                dataSnapshot.child("date").getValue().toString(),
-                                dataSnapshot.child("month").getValue().toString(),
-                                dataSnapshot.child("year").getValue().toString(),
-                                Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
-                        ));
-                    }
+                    monthlyExpense.add(new Expense(dataSnapshot.child("id").getValue().toString(),
+                            dataSnapshot.child("amount").getValue().toString(),
+                            dataSnapshot.child("purpose").getValue().toString(),
+                            dataSnapshot.child("startDate").getValue().toString(),
+                            dataSnapshot.child("endDate").getValue().toString(),
+                            dataSnapshot.child("date").getValue().toString(),
+                            dataSnapshot.child("month").getValue().toString(),
+                            dataSnapshot.child("year").getValue().toString(),
+                            Boolean.parseBoolean(dataSnapshot.child("isOneTimeExp").getValue().toString())
+                    ));
                 }
                 adapter = new RecentExpenseAdapter(getActivity(),monthlyExpense);
                 recyclerView.setAdapter(adapter);
@@ -638,15 +622,14 @@ public class HomeFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
 
         getSavedAmount();
-        if(isMounted) {
-            deductExpenseEverySecond(Double.parseDouble(input), incomeAmount);
-        }
+        deductExpenseEverySecond(Double.parseDouble(input), incomeAmount);
+
     }
 
 
     private void deductExpenseEverySecond(double value, String incomeAmount) {
 
-        SharedPreferences preferences = getActivity().getSharedPreferences("pinch.android.earnie",MODE_PRIVATE);
+        SharedPreferences preferences = this.getActivity().getSharedPreferences("pinch.android.earnie",MODE_PRIVATE);
         isSet = preferences.getBoolean("isSet",false);
         SharedPreferences.Editor editor = preferences.edit();
 
