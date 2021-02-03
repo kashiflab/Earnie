@@ -48,8 +48,9 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
     private boolean ed = false, sd = false;
     private FirebaseAuth auth;
 
-    private boolean isEdit;
+    private boolean isEdit, deducted;
     private String eAmount, ePurpose, eStartDate, eEndDate, id;
+
 
 
     @Override
@@ -76,6 +77,8 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
             eEndDate = getIntent().getStringExtra("endDate");
             eStartDate = getIntent().getStringExtra("startDate");
             id = getIntent().getStringExtra("id");
+
+//            deducted = getIntent().getBooleanExtra("deducted",false);
 
             amount.setText(eAmount);
             purpose.setText(ePurpose);
@@ -128,7 +131,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
                 } else {
                     if(!isEdit) {
                         addMonthlyExpense(amount.getText().toString(), purpose.getText().toString(),
-                                startDate.getText().toString(), endDate.getText().toString());
+                                startDate.getText().toString(), endDate.getText().toString(),false);
                     }else{
                         updateMonthlyExpense(amount.getText().toString(), purpose.getText().toString(),
                                 startDate.getText().toString(), endDate.getText().toString());
@@ -254,7 +257,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         endDate.setText(sdf.format(myCalendar2.getTime()));
     }
 
-    private void addMonthlyExpense(String amount2, String purpose2, String startDate2, String endDate2) {
+    private void addMonthlyExpense(String amount2, String purpose2, String startDate2, String endDate2, boolean deducted) {
 
 
         Utils.initpDialog(AddMonthlyExpenseActivity.this,"Adding Expense...");
@@ -282,6 +285,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         map.put("month",month);
         map.put("year",year);
         map.put("isOneTimeExp",OTE);
+        map.put("deducted",deducted);
 
         reference.child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
