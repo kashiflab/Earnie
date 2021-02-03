@@ -394,7 +394,7 @@ public class HomeFragment extends Fragment {
     private void getMonthlyExpenses() {
         monthlyExpense = new ArrayList<>();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlySavings").child(monthlySavingsId).child("MonthlyExpense");
+                .child(auth.getCurrentUser().getUid()).child("MonthlyExpense");
 
         reference.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
