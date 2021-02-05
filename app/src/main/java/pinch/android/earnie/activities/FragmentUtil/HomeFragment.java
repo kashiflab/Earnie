@@ -125,7 +125,13 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         timer = new Timer();
-        getIncome();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                getIncome();
+            }
+        },2000);
         getMonthlySavings();
     }
 
@@ -146,8 +152,14 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
 
-        getIncome();
         getMonthlySavings();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                getIncome();
+            }
+        },2000);
 
 
         add_expense_tv.setOnClickListener(new View.OnClickListener() {
@@ -518,6 +530,42 @@ public class HomeFragment extends Fragment {
     private ArrayList<String> labelName;
     boolean isShown = false;
 
+
+    private ArrayList<String> isMonthly;
+    public void isMonthExist(){
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        String formattedDate2 = df2.format(c);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(auth.getCurrentUser().getUid()).child("MonthlySavings");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                isMonthly = new ArrayList<>();
+                for(DataSnapshot dataSnapshot:snapshot.getChildren()){
+                    isMonthly.add(dataSnapshot.child("month").getValue().toString());
+                }
+                for(int i=0;i<savings.size();i++) {
+                    if (isMonthly.contains(formattedDate2.split("-")[1])) {
+                        savingId = savings.get(i).getId();
+                        break;
+                    } else {
+                        startNewMonth();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void getMonthlySavings(){
         getOneTimeExpense();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
@@ -535,17 +583,15 @@ public class HomeFragment extends Fragment {
                 SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
                 String formattedDate2 = df2.format(c);
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
-                    savings.add(new MonthlySavings(dataSnapshot.child("saved").getValue().toString(),
+                    savings.add(new MonthlySavings(dataSnapshot.getKey(),dataSnapshot.child("saved").getValue().toString(),
                             dataSnapshot.child("month").getValue().toString(),dataSnapshot.child("year").getValue().toString(),
                             Boolean.parseBoolean(dataSnapshot.child("isSalarySet").getValue().toString())));
 
-                    if(dataSnapshot.child("month").getValue().toString()
-                            .equals(formattedDate2.split("-")[1])) {
-                        savingId = dataSnapshot.getKey().toString();
-                    }else{
-                        startNewMonth();
-                    }
+
                 }
+
+                isMonthExist();
+
                 for (int i=0;i<savings.size();i++) {
 
                     if(lastDataSet!=null)
@@ -613,7 +659,7 @@ public class HomeFragment extends Fragment {
         HashMap<String, Object> map = new HashMap<>();
         map.put("saved",incomeAmount);
         map.put("month",formattedDate2.split("-")[1]);
-        map.put("isSalraySet",true);
+        map.put("isSalarySet",true);
         map.put("year",formattedDate2.split("-")[2]);
 
         reference.child(id).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -681,13 +727,30 @@ public class HomeFragment extends Fragment {
         map.put("saved",remaining);
         map.put("month",formattedDate2.split("-")[1]);
 
-        if(isSet){
-            reference.child(savingId).updateChildren(map);
+        if(savingId==null) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isSet) {
+                        reference.child(savingId).updateChildren(map);
+                    } else {
+                        editor.putBoolean("isSet", true);
+                        editor.putString("id", id);
+                        editor.apply();
+                        reference.child(id).setValue(map);
+                    }
+                }
+            },4000);
+
         }else {
-            editor.putBoolean("isSet",true);
-            editor.putString("id",id);
-            editor.apply();
-            reference.child(id).setValue(map);
+            if (isSet) {
+                reference.child(savingId).updateChildren(map);
+            } else {
+                editor.putBoolean("isSet", true);
+                editor.putString("id", id);
+                editor.apply();
+                reference.child(id).setValue(map);
+            }
         }
 
     }

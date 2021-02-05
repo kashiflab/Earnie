@@ -78,16 +78,16 @@
                             app:srcCompat="@drawable/logo" />
                     </LinearLayout>
                     <LinearLayout
-                        android:paddingTop="15dp"
-                        android:gravity="right"
+                        android:gravity="right|center"
                         android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
                         <ImageView
-
+                            android:layout_gravity="center"
+                            android:padding="10dp"
                             android:id="@+id/close"
-                            android:layout_width="15dp"
-                            android:layout_height="15dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             app:srcCompat="@drawable/close" />
                     </LinearLayout>
 
