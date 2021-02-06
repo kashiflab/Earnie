@@ -52,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
         number = findViewById(R.id.number);
         country_code = findViewById(R.id.country_code);
         password = findViewById(R.id.password);
-        confirmPassword = findViewById(R.id.confirm_password);
+        confirmPassword = findViewById(R.id.confirmPassword);
         name = findViewById(R.id.fullname);
         saveChanges = findViewById(R.id.saveChanges);
         back_press=(ImageView)findViewById(R.id.back_press);
@@ -164,8 +164,8 @@ public class EditProfileActivity extends AppCompatActivity {
         reference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Utils.hidepDialog();
                 if(task.isSuccessful()) {
+                    EditProfileActivity.super.onBackPressed();
                     Toast.makeText(EditProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                 }
             }
