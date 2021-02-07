@@ -82,7 +82,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     isSalarySet(auth.getCurrentUser().getUid());
 
                 }
-                else Toast.makeText(LoginActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+                else {
+                    Utils.hidepDialog();
+                    Toast.makeText(LoginActivity.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

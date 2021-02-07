@@ -699,58 +699,66 @@ public class HomeFragment extends Fragment {
 //        Log.i("SERVICESSS","START");
         auth = FirebaseAuth.getInstance();
 
-        getSavedAmount();
-        deductExpenseEverySecond(Double.parseDouble(input), incomeAmount);
 
+        getSavedAmount();
+        try {
+            deductExpenseEverySecond(Double.parseDouble(input), incomeAmount);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
     private void deductExpenseEverySecond(double value, String incomeAmount) {
 
-        SharedPreferences preferences = this.getActivity().getSharedPreferences("pinch.android.earnie",MODE_PRIVATE);
-        isSet = preferences.getBoolean("isSet",false);
-        SharedPreferences.Editor editor = preferences.edit();
+        try {
+            SharedPreferences preferences = this.getActivity().getSharedPreferences("pinch.android.earnie", MODE_PRIVATE);
+            isSet = preferences.getBoolean("isSet", false);
+            SharedPreferences.Editor editor = preferences.edit();
 
-        double remaining =  value;
+            double remaining = value;
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
-                .child(auth.getCurrentUser().getUid()).child("MonthlySavings");
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                    .child(auth.getCurrentUser().getUid()).child("MonthlySavings");
 
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
-        String formattedDate2 = df2.format(c);
+            Date c = Calendar.getInstance().getTime();
+            System.out.println("Current time => " + c);
+            SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+            String formattedDate2 = df2.format(c);
 
-        String id = UUID.randomUUID().toString();
+            String id = UUID.randomUUID().toString();
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("saved",remaining);
-        map.put("month",formattedDate2.split("-")[1]);
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("saved", remaining);
+            map.put("month", formattedDate2.split("-")[1]);
 
-        if(savingId==null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (isSet) {
-                        reference.child(savingId).updateChildren(map);
-                    } else {
-                        editor.putBoolean("isSet", true);
-                        editor.putString("id", id);
-                        editor.apply();
-                        reference.child(id).setValue(map);
+            if (savingId == null) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (isSet) {
+                            reference.child(savingId).updateChildren(map);
+                        } else {
+                            editor.putBoolean("isSet", true);
+                            editor.putString("id", id);
+                            editor.apply();
+                            reference.child(id).setValue(map);
+                        }
                     }
-                }
-            },4000);
+                }, 4000);
 
-        }else {
-            if (isSet) {
-                reference.child(savingId).updateChildren(map);
             } else {
-                editor.putBoolean("isSet", true);
-                editor.putString("id", id);
-                editor.apply();
-                reference.child(id).setValue(map);
+                if (isSet) {
+                    reference.child(savingId).updateChildren(map);
+                } else {
+                    editor.putBoolean("isSet", true);
+                    editor.putString("id", id);
+                    editor.apply();
+                    reference.child(id).setValue(map);
+                }
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
     }

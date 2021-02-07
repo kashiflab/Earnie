@@ -159,7 +159,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("fullname",name);
         map.put("number",number);
         map.put("countryCode",countryCode);
-        map.put("salary",salary);
+        map.put("income",salary);
 
         reference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

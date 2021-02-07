@@ -62,6 +62,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             && !TextUtils.isEmpty(name.getText()) && !TextUtils.isEmpty(number.getText())
             && !TextUtils.isEmpty(confirmPassword.getText()) && !TextUtils.isEmpty(countryCode.getText())) {
 
+                if(password.getText().length()<6){
+                    Toast.makeText(this, "Password should be at least 6 characters", Toast.LENGTH_SHORT).show();
+                }
                 if(password.getText().toString().equals(confirmPassword.getText().toString())) {
                     Utils.initpDialog(this,"Please wait...");
                     Utils.showpDialog();
