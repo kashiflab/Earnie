@@ -175,6 +175,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="40dp"
                 android:textColor="@color/black"
+                android:maxLength="6"
                 android:hint="Salary"
                 android:textSize="16sp"
                 android:inputType="number"

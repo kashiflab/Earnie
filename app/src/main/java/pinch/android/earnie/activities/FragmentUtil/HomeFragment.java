@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -110,6 +111,7 @@ public class HomeFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+        isShown = false;
         timer.cancel();
         if(timerTask!=null) {
             try {
@@ -124,6 +126,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+//        isShown = true;
         timer = new Timer();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -345,14 +348,14 @@ public class HomeFragment extends Fragment {
             }
         };
         try {
-            timer.schedule(timerTask, 10000, 10000);
+            timer.schedule(timerTask, 1000, 1000);
         }
         catch (Exception e)
         {
             timer = new Timer();
 
             try {
-                timer.schedule(timerTask, 10000, 10000);
+                timer.schedule(timerTask, 1000, 1000);
             }
             catch (Exception e4)
             {
@@ -682,6 +685,9 @@ public class HomeFragment extends Fragment {
         barData = new BarData(barDataSet);
 
         barChart.setData(barData);
+
+        barChart.setFitBars(true);
+        barChart.setVisibleYRange(0f,100000f, YAxis.AxisDependency.LEFT);
 
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter(labelName));

@@ -90,7 +90,7 @@
         android:id="@+id/add_expense_tv"
         android:gravity="center"
         android:textColor="@color/black"
-        android:text="Add  Expense"
+        android:text="Add/Remove Expense"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:background="@drawable/add_monthly_btn"

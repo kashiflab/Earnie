@@ -168,6 +168,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     EditProfileActivity.super.onBackPressed();
                     Toast.makeText(EditProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Toast.makeText(EditProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
