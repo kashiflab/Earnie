@@ -194,7 +194,7 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
 
         LocalDate todaydate = LocalDate.now();
@@ -299,7 +299,7 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
 
         LocalDate todaydate = LocalDate.now();
@@ -390,7 +390,7 @@ public class HomeFragment extends Fragment {
     private void getMonthlySavingsId(String id) {
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String month = formattedDate.split("-")[1];
         String year = formattedDate.split("-")[2];
@@ -507,7 +507,7 @@ public class HomeFragment extends Fragment {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Date c = Calendar.getInstance().getTime();
 
-                    SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                    SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                     String formattedDate2 = df2.format(c);
 
                     if(formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {
@@ -539,7 +539,7 @@ public class HomeFragment extends Fragment {
 
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
                 .child(auth.getCurrentUser().getUid()).child("MonthlySavings");
@@ -553,7 +553,13 @@ public class HomeFragment extends Fragment {
                 }
                 for(int i=0;i<savings.size();i++) {
                     if (isMonthly.contains(formattedDate2.split("-")[1])) {
-                        savingId = savings.get(i).getId();
+                        for(int j=0;j<savings.size();j++) {
+                            if(isMonthly.get(j).equals(formattedDate2.split("-")[1])) {
+                                savingId = savings.get(j).getId();
+                                Log.i("savingId",savingId);
+                                break;
+                            }
+                        }
                         break;
                     } else {
                         startNewMonth();
@@ -583,7 +589,7 @@ public class HomeFragment extends Fragment {
                 labelName = new ArrayList<>();
                 Date c = Calendar.getInstance().getTime();
 
-                SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                 String formattedDate2 = df2.format(c);
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     savings.add(new MonthlySavings(dataSnapshot.getKey(),dataSnapshot.child("saved").getValue().toString(),
@@ -654,7 +660,7 @@ public class HomeFragment extends Fragment {
                 .child("MonthlySavings");
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
 
         String id = UUID.randomUUID().toString();
@@ -729,7 +735,7 @@ public class HomeFragment extends Fragment {
 
             Date c = Calendar.getInstance().getTime();
             System.out.println("Current time => " + c);
-            SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+            SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
             String formattedDate2 = df2.format(c);
 
             String id = UUID.randomUUID().toString();
@@ -738,31 +744,35 @@ public class HomeFragment extends Fragment {
             map.put("saved", remaining);
             map.put("month", formattedDate2.split("-")[1]);
 
-            if (savingId == null) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (isSet) {
-                            reference.child(savingId).updateChildren(map);
-                        } else {
-                            editor.putBoolean("isSet", true);
-                            editor.putString("id", id);
-                            editor.apply();
-                            reference.child(id).setValue(map);
-                        }
-                    }
-                }, 4000);
-
-            } else {
-                if (isSet) {
-                    reference.child(savingId).updateChildren(map);
-                } else {
-                    editor.putBoolean("isSet", true);
-                    editor.putString("id", id);
-                    editor.apply();
-                    reference.child(id).setValue(map);
-                }
+            if(savingId !=null){
+                reference.child(savingId).updateChildren(map);
             }
+
+//            if (savingId == null) {
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        if (isSet) {
+//                            reference.child(savingId).updateChildren(map);
+//                        } else {
+//                            editor.putBoolean("isSet", true);
+//                            editor.putString("id", id);
+//                            editor.apply();
+//                            reference.child(id).setValue(map);
+//                        }
+//                    }
+//                }, 4000);
+//
+//            } else {
+//                if (isSet) {
+//                    reference.child(savingId).updateChildren(map);
+//                } else {
+//                    editor.putBoolean("isSet", true);
+//                    editor.putString("id", id);
+//                    editor.apply();
+//                    reference.child(id).setValue(map);
+//                }
+//            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -813,7 +823,7 @@ public class HomeFragment extends Fragment {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         Date c = Calendar.getInstance().getTime();
                         System.out.println("Current time => " + c);
-                        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         String formattedDate2 = df2.format(c);
 
                         if (formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {

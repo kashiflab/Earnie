@@ -206,7 +206,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String date = formattedDate.split("-")[0];
         String month = formattedDate.split("-")[1];
@@ -266,7 +266,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
         Utils.showpDialog();
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String date = formattedDate.split("-")[0];
         String month = formattedDate.split("-")[1];
@@ -313,7 +313,7 @@ public class AddMonthlyExpenseActivity extends AppCompatActivity {
     private void getMonthlySavingsId() {
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String month = formattedDate.split("-")[1];
         String year = formattedDate.split("-")[2];

@@ -91,12 +91,13 @@ public class AddExpensesActivity extends AppCompatActivity {
     private void getMonthlySavingsId() {
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String month = formattedDate.split("-")[1];
         String year = formattedDate.split("-")[2];
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users").child(auth.getCurrentUser().getUid())
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Users")
+                .child(auth.getCurrentUser().getUid())
                 .child("MonthlySavings");
         reference.addValueEventListener(new ValueEventListener() {
             @Override

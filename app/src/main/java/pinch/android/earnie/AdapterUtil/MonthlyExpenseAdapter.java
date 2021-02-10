@@ -111,7 +111,7 @@ public class MonthlyExpenseAdapter extends RecyclerView.Adapter<MonthlyExpenseAd
     private void getMonthlySavingsId(String id) {
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate = df.format(c);
         String month = formattedDate.split("-")[1];
         String year = formattedDate.split("-")[2];

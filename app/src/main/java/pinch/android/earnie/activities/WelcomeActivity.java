@@ -121,7 +121,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
 
         String id = UUID.randomUUID().toString();

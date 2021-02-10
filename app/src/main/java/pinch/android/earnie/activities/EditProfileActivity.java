@@ -145,6 +145,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 }
                             });
                         } else {
+                            Toast.makeText(EditProfileActivity.this, task.getException().getMessage().toString(), Toast.LENGTH_SHORT).show();
                             Log.d("TAG", "Error auth failed");
                         }
                     }
@@ -169,7 +170,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     Toast.makeText(EditProfileActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Toast.makeText(EditProfileActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

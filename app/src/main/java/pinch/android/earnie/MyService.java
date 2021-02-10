@@ -104,7 +104,7 @@ public class MyService extends Service {
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+        SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         String formattedDate2 = df2.format(c);
 
         String id = UUID.randomUUID().toString();
@@ -134,7 +134,7 @@ public class MyService extends Service {
                 for(DataSnapshot dataSnapshot:snapshot.getChildren()){
                     Date c = Calendar.getInstance().getTime();
                     System.out.println("Current time => " + c);
-                    SimpleDateFormat df2 = new SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault());
+                    SimpleDateFormat df2 = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                     String formattedDate2 = df2.format(c);
 
                     if(formattedDate2.split("-")[1].equals(dataSnapshot.child("month").getValue().toString())) {
