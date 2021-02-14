@@ -225,7 +225,7 @@ public class HomeFragment extends Fragment {
 
                     Log.e("thisis", "Monthly");
                     // monthly, we don't need any time condition here except that it started before this time
-                    if (startStamp >= currentMonthStartStamp && endStamp < currentStamp) {
+                    if (startStamp >= currentMonthStartStamp && startStamp < currentStamp) {
                         spentExpense = expenseAmount;
                     }
                 } else {
